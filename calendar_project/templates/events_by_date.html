@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head><title>Events</title></head>
+<body>
+    <h1>Events on {{ date }}</h1>
+    <ul>
+        {% for event in events %}
+            <li><strong>{{ event.title }}</strong> - {{ event.description }}</li>
+        {% empty %}
+            <li>No events found for this day.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'calendar_view' %}">Back to Calendar</a>
+</body>
+</html>
