@@ -4,36 +4,21 @@
     <title>Calendar</title>
     <style>
         table {
-            border-collapse: collapse;
             width: 100%;
+            border-collapse: collapse;
         }
-        th, td {
-            border: 1px solid gray;
-            padding: 8px;
+        td, th {
+            border: 1px solid #999;
             text-align: center;
+            padding: 10px;
         }
-        a {
-            text-decoration: none;
-            color: blue;
+        .noday {
+            background-color: #eee;
         }
     </style>
 </head>
 <body>
     <h1>Calendar - {{ month }}/{{ year }}</h1>
-    <a href="{% url 'event_add' %}">Add Event</a>
     <div>{{ calendar|safe }}</div>
-
-    <h2>Events this month</h2>
-    <ul>
-        {% for event in events %}
-            <li>
-                <a href="{% url 'events_by_date' event.date.year event.date.month event.date.day %}">
-                    {{ event.date }} - {{ event.title }}
-                </a>
-            </li>
-        {% empty %}
-            <li>No events</li>
-        {% endfor %}
-    </ul>
 </body>
 </html>
