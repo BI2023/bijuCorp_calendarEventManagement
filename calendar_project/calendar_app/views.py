@@ -1,29 +1,24 @@
 # from django.shortcuts import render
 # from calendar import HTMLCalendar
 # from datetime import datetime, date
-# from .utils import get_status_for_date
+# from .utils import get_stored_status
 
 # class StatusCalendar(HTMLCalendar):
 #     def formatday(self, day, weekday):
 #         if day == 0:
 #             return '<td class="noday">&nbsp;</td>'
 
-#         current_date = date.today()
 #         this_date = date(self.year, self.month, day)
+#         status = get_stored_status(this_date)
 
-#         if this_date < current_date:
-#             # Color historical dates based on computed status
-#             status = get_status_for_date(this_date)
-#             color = 'green' if status == 'success' else 'red'
-#             return f'<td style="background-color:{color}; padding:10px;">{day}</td>'
-#         elif this_date == current_date:
-#             # Color only current day based on status
-#             status = get_status_for_date(this_date)
-#             color = 'green' if status == 'success' else 'red'
-#             return f'<td style="background-color:{color}; font-weight:bold; padding:10px;">{day}</td>'
+#         if status == "success":
+#             color = "green"
+#         elif status == "failure":
+#             color = "red"
 #         else:
-#             # Future dates remain uncolored
-#             return f'<td style="padding:10px;">{day}</td>'
+#             return f'<td style="padding:10px;">{day}</td>'  # no color
+
+#         return f'<td style="background-color:{color}; padding:10px;">{day}</td>'
 
 #     def formatmonth(self, year, month, withyear=True):
 #         self.year, self.month = year, month
@@ -46,29 +41,84 @@
 
 
 
+# =============================================================
+
+
+
+# from django.shortcuts import render
+# from calendar import HTMLCalendar
+# from datetime import datetime, date
+# from .utils import load_status_data
+
+# class StatusCalendar(HTMLCalendar):
+#     def __init__(self, data):
+#         super().__init__()
+#         self.data = data
+
+#     def formatday(self, day, weekday):
+#         if day == 0:
+#             return '<td class="noday">&nbsp;</td>'
+
+#         this_date = date(self.year, self.month, day).isoformat()
+#         status_data = self.data.get(this_date, {})
+#         color = "green" if status_data else "white"
+
+#         return f'<td style="background-color:{color}; padding:10px;" class="calendar-cell" data-date="{this_date}">{day}</td>'
+
+#     def formatmonth(self, year, month, withyear=True):
+#         self.year, self.month = year, month
+#         return super().formatmonth(year, month, withyear)
+
+# def calendar_view(request):
+#     now = datetime.now()
+#     year = now.year
+#     month = now.month
+#     data = load_status_data()
+
+#     cal = StatusCalendar(data)
+#     html_calendar = cal.formatmonth(year, month)
+
+#     return render(request, 'calendar_app/calendar.html', {
+#         'calendar': html_calendar,
+#         'status_data': data,
+#         'month': month,
+#         'year': year
+#     })
+
+
+
+
+# =================================================================================
+
 
 
 from django.shortcuts import render
 from calendar import HTMLCalendar
 from datetime import datetime, date
-from .utils import get_stored_status
+from .utils import load_status_data
 
 class StatusCalendar(HTMLCalendar):
+    def __init__(self, data):
+        super().__init__()
+        self.data = data
+
     def formatday(self, day, weekday):
         if day == 0:
             return '<td class="noday">&nbsp;</td>'
 
-        this_date = date(self.year, self.month, day)
-        status = get_stored_status(this_date)
+        this_date = date(self.year, self.month, day).isoformat()
+        status_info = self.data.get(this_date, {})
+        status = status_info.get("status", "").lower()
 
+        # Determine background color
         if status == "success":
-            color = "green"
+            color = "lightgreen"
         elif status == "failure":
-            color = "red"
+            color = "lightcoral"
         else:
-            return f'<td style="padding:10px;">{day}</td>'  # no color
+            color = "white"
 
-        return f'<td style="background-color:{color}; padding:10px;">{day}</td>'
+        return f'<td style="background-color:{color}; padding:10px;" class="calendar-cell" data-date="{this_date}">{day}</td>'
 
     def formatmonth(self, year, month, withyear=True):
         self.year, self.month = year, month
@@ -78,12 +128,14 @@ def calendar_view(request):
     now = datetime.now()
     year = now.year
     month = now.month
+    data = load_status_data()
 
-    cal = StatusCalendar()
+    cal = StatusCalendar(data)
     html_calendar = cal.formatmonth(year, month)
 
     return render(request, 'calendar_app/calendar.html', {
         'calendar': html_calendar,
+        'status_data': data,
         'month': month,
         'year': year
     })
