@@ -1,12 +1,13 @@
 {
   "2025-05-20": {
-    "name": "Teste",
-    "status": "success",
-    "notes": "Task completed successfully."
+    "Slapi Stage": "Testeskjkldjfkgjg",
+    "Slapi status": "success",
+    "Actual Release Date": "Task completed successfully.",
+    "Expected Release Date": "Task completed successfully."
   },
   "2025-05-21": {
     "name": "Teste2",
-    "status": "failure",
-    "notes": "Issue occurred during processing."
+    "Actual Release Date": "Task completed successfully.",
+    "Expected Release Date": "Task completed successfully."
   }
 }
