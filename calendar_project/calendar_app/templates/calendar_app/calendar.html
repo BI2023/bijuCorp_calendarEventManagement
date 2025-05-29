@@ -230,13 +230,14 @@
 
            if (data) {
                content.innerHTML = `
-                   <h3>Details for ${date}</h3>
-                   <ul>
-                       <li><strong>Name:</strong> ${data.name || 'N/A'}</li>
-                       <li><strong>Status:</strong> ${data.status || 'N/A'}</li>
-                       <li><strong>Notes:</strong> ${data.notes || 'N/A'}</li>
-                   </ul>
-               `;
+    <h3>Details for ${date}</h3>
+    <ul>
+        <li><strong>Slapi Stage:</strong> ${data["Slapi Stage"] || 'N/A'}</li>
+        <li><strong>Slapi status:</strong> ${data["Slapi status"] || 'N/A'}</li>
+        <li><strong>Actual Release Date:</strong> ${data["Actual Release Date"] || 'N/A'}</li>
+        <li><strong>Expected Release Date:</strong> ${data["Expected Release Date"] || 'N/A'}</li>
+    </ul>
+`;
            } else {
                content.innerHTML = `<h3>${date}</h3><p>No data available.</p>`;
            }
