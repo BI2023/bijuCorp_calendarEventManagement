@@ -68,7 +68,7 @@ class StatusCalendar(HTMLCalendar):
 
         this_date = date(self.year, self.month, day).isoformat()
         status_info = self.data.get(this_date, {})
-        status = status_info.get("status", "").lower()
+        status = status_info.get("Slapi status", "").lower()
 
         if status == "success":
             color = "lightgreen"
