@@ -2,45 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Release Calendar</title>
+  <title>Beautiful Calendar with Events</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Roboto', sans-serif;
       background-color: #f0f2f5;
       margin: 0;
-      padding: 0;
-    }
-
-    .header {
-      background: linear-gradient(to right, #2980b9, #6dd5fa);
-      color: white;
-      padding: 30px 20px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .header h1 {
-      margin: 0;
-      font-size: 36px;
-      font-weight: 400;
-      letter-spacing: 1px;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: 30px auto;
-      background: #ffffff;
-      border-radius: 12px;
       padding: 20px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
     }
 
     h2 {
+      color: #2c3e50;
       text-align: center;
       margin-bottom: 20px;
-      font-size: 22px;
-      color: #2c3e50;
+      font-size: 28px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
     }
 
     h2 a {
@@ -49,7 +27,6 @@
       background-color: #3498db;
       padding: 8px 16px;
       border-radius: 8px;
-      margin: 0 5px;
       transition: background-color 0.3s;
       font-size: 14px;
     }
@@ -58,18 +35,39 @@
       background-color: #2980b9;
     }
 
+    .export-btn {
+      display: block;
+      margin: 0 auto 20px auto;
+      padding: 10px 18px;
+      background-color: #2ecc71;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+
+    .export-btn:hover {
+      background-color: #27ae60;
+    }
+
     table {
       border-collapse: collapse;
       width: 100%;
-      margin-top: 10px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
     }
 
     th {
       background-color: #3498db;
       color: white;
-      padding: 12px;
+      padding: 16px;
       font-weight: 500;
       text-transform: uppercase;
+      font-size: 14px;
     }
 
     td {
@@ -78,7 +76,10 @@
       width: 14.28%;
       height: 100px;
       transition: background 0.3s, transform 0.2s;
+      position: relative;
       cursor: pointer;
+      vertical-align: top;
+      padding: 5px;
     }
 
     td:hover {
@@ -86,20 +87,28 @@
       transform: scale(1.02);
     }
 
-    .calendar-cell {
-      padding: 8px;
+    .calendar-cell .date {
+      font-weight: bold;
+      margin-bottom: 5px;
     }
 
-    .today {
-      border: 2px solid #3498db;
-      font-weight: bold;
+    .event-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin: 3px;
     }
+
+    .dot-present { background-color: #2ecc71; }
+    .dot-absent { background-color: #e74c3c; }
+    .dot-holiday { background-color: #f39c12; }
 
     .popup {
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%) scale(1);
       background: white;
       padding: 25px;
       border-radius: 12px;
@@ -122,6 +131,7 @@
 
     .popup-close:hover {
       color: #c0392b;
+      transform: scale(1.1);
     }
 
     #popup-content h3 {
@@ -147,16 +157,9 @@
       color: #3498db;
     }
 
-    .status-present {
-      background-color: #e8f5e9;
-    }
-
-    .status-absent {
-      background-color: #ffebee;
-    }
-
-    .status-holiday {
-      background-color: #fff8e1;
+    .today {
+      border: 2px solid #3498db;
+      font-weight: bold;
     }
 
     .overlay {
@@ -183,27 +186,28 @@
         max-width: none;
       }
 
-      .header h1 {
-        font-size: 28px;
+      h2 {
+        font-size: 22px;
+      }
+
+      h2 a {
+        font-size: 12px;
+        padding: 6px 10px;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <h1>Release Calendar</h1>
-  </div>
+  <h2>
+    <a href="?month={{ prev_month }}&year={{ prev_year }}">&laquo; Prev</a>
+    &nbsp; {{ month }}/{{ year }} &nbsp;
+    <a href="?month={{ next_month }}&year={{ next_year }}">Next &raquo;</a>
+  </h2>
 
-  <div class="container">
-    <h2>
-      <a href="?month={{ prev_month }}&year={{ prev_year }}">&laquo; Prev</a>
-      {{ month }}/{{ year }}
-      <a href="?month={{ next_month }}&year={{ next_year }}">Next &raquo;</a>
-    </h2>
+  <button class="export-btn" onclick="exportCSV()">Download Calendar Data</button>
 
-    {{ calendar|safe }}
-  </div>
+  {{ calendar|safe }}
 
   <div class="overlay" id="overlay"></div>
   <div class="popup" id="popup">
@@ -219,11 +223,42 @@
       document.getElementById('overlay').style.display = 'none';
     }
 
-    document.querySelectorAll('.calendar-cell').forEach(cell => {
-      cell.addEventListener('click', () => {
-        const date = cell.getAttribute('data-date');
-        const data = statusData[date];
+    function exportCSV() {
+      let csv = "Date,Slapi Stage,Slapi Status,Actual Release Date,Expected Release Date\n";
+      for (const [date, data] of Object.entries(statusData)) {
+        csv += `"${date}","${data["Slapi Stage"] || ''}","${data["Slapi status"] || ''}","${data["Actual Release Date"] || ''}","${data["Expected Release Date"] || ''}"\n`;
+      }
 
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "calendar_data.csv";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    document.querySelectorAll('.calendar-cell').forEach(cell => {
+      const date = cell.getAttribute('data-date');
+      const data = statusData[date];
+
+      // Add colored dots inside calendar cell
+      if (data && data["Slapi status"]) {
+        const dot = document.createElement('span');
+        dot.classList.add('event-dot');
+
+        if (data["Slapi status"].toLowerCase().includes("present")) {
+          dot.classList.add('dot-present');
+        } else if (data["Slapi status"].toLowerCase().includes("absent")) {
+          dot.classList.add('dot-absent');
+        } else if (data["Slapi status"].toLowerCase().includes("holiday")) {
+          dot.classList.add('dot-holiday');
+        }
+
+        cell.appendChild(dot);
+      }
+
+      cell.addEventListener('click', () => {
         const popup = document.getElementById('popup');
         const overlay = document.getElementById('overlay');
         const content = document.getElementById('popup-content');
@@ -248,11 +283,9 @@
     });
 
     document.getElementById('overlay').addEventListener('click', closePopup);
-
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') closePopup();
     });
   </script>
-
 </body>
 </html>
