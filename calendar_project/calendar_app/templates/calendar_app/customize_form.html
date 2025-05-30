@@ -3,54 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <title>Release Calendar</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #eef2f7;
-      --text: #333;
-      --card: #fff;
-      --header-bg: linear-gradient(to right, #3498db, #6dd5fa);
-      --title-color: white;
-      --link-bg: #3498db;
-      --link-hover: #2980b9;
-      --cell-hover: #f2f9ff;
-      --today-bg: #ebf5fb;
+      --bg: #f0f2f5;
+      --text: #2c3e50;
+      --card: #ffffff;
+      --header-bg: linear-gradient(to right, #2980b9, #6dd5fa);
+      --accent: #3498db;
+      --accent-hover: #2980b9;
+      --border: #ecf0f1;
+      --cell-hover: #f1f8ff;
       --popup-bg: #fff;
-      --popup-border: #3498db;
-      --li-bg: #f9fbfd;
-      --li-border: #3498db;
-      --close: #e74c3c;
-      --close-hover: #c0392b;
     }
 
     body.dark {
-      --bg: #181a24;
-      --text:rgb(224, 8, 8);
-      --card: #242634;
-      --header-bg: linear-gradient(to right, #1e3a8a, #2563eb);
-      --title-color: #ffffff;
-      --link-bg: #4aa3ff;
-      --link-hover: #1d4ed8;
-      --cell-hover: #2b2f42;
-      --today-bg: #2e3c50;
-      --popup-bg: #2a2d3e;
-      --popup-border: #4aa3ff;
-      --li-bg: #343849;
-      --li-border: #4aa3ff;
-      --close: #ff6b6b;
-      --close-hover: #ff4c4c;
-    }
-
-    * {
-      box-sizing: border-box;
+      --bg: #1e1e2f;
+      --text:rgb(219, 43, 43);
+      --card: #2c2f4a;
+      --header-bg: linear-gradient(to right, #1e3c72, #2a5298);
+      --accent: #4aa3ff;
+      --accent-hover: #2a75c7;
+      --border: #3a3a4a;
+      --cell-hover: #2e3c55;
+      --popup-bg: #2f354a;
     }
 
     body {
       font-family: 'Roboto', sans-serif;
-      margin: 0;
-      padding: 0;
       background-color: var(--bg);
       color: var(--text);
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.3s, color 0.3s;
     }
 
     .header {
@@ -59,96 +44,98 @@
       align-items: center;
       background: var(--header-bg);
       padding: 20px 30px;
-      border-radius: 0 0 20px 20px;
-      color: var(--title-color);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-radius: 0 0 12px 12px;
+      color: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       flex-wrap: wrap;
     }
 
     .logo {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 500;
+      white-space: nowrap;
     }
 
     .title {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 600;
+      letter-spacing: 1px;
       flex: 1;
-      text-align: right;
+      text-align: center;
     }
 
-    #theme-toggle {
+    .theme-toggle {
       background: transparent;
-      border: 2px solid var(--title-color);
-      color: var(--title-color);
-      border-radius: 6px;
-      padding: 6px 12px;
+      border: 2px solid white;
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
       cursor: pointer;
-      font-size: 14px;
-      margin-left: 20px;
+      font-size: 16px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.2);
     }
 
     .container {
       max-width: 1000px;
-      margin: 40px auto;
+      margin: 30px auto;
       background: var(--card);
-      border-radius: 16px;
-      padding: 30px 25px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      transition: background-color 0.3s;
     }
 
     h2 {
       text-align: center;
-      margin-bottom: 25px;
-      font-size: 20px;
-      color: var(--text);
+      margin-bottom: 20px;
+      font-size: 22px;
     }
 
     h2 a {
       text-decoration: none;
-      background-color: var(--link-bg);
-      color: var(--title-color);
-      padding: 8px 14px;
+      color: white;
+      background-color: var(--accent);
+      padding: 8px 16px;
       border-radius: 8px;
-      margin: 0 6px;
-      font-size: 14px;
+      margin: 0 5px;
       transition: background-color 0.3s;
+      font-size: 14px;
     }
 
     h2 a:hover {
-      background-color: var(--link-hover);
+      background-color: var(--accent-hover);
     }
 
     table {
-      width: 100%;
       border-collapse: collapse;
-      margin-top: 15px;
-    }
-
-    th, td {
-      padding: 14px;
-      text-align: center;
+      width: 100%;
+      margin-top: 10px;
     }
 
     th {
-      background-color: var(--link-hover);
-      color: var(--title-color);
-      text-transform: uppercase;
+      background-color: var(--accent);
+      color: white;
+      padding: 12px;
       font-weight: 500;
+      text-transform: uppercase;
     }
 
     td {
-      border: 1px solid #e3e7ec;
+      border: 1px solid var(--border);
+      text-align: center;
       width: 14.28%;
       height: 100px;
       cursor: pointer;
-      transition: background-color 0.3s, transform 0.2s;
-      vertical-align: top;
+      transition: background 0.3s, transform 0.2s;
     }
 
     td:hover {
       background-color: var(--cell-hover);
-      transform: scale(1.03);
+      transform: scale(1.02);
     }
 
     .calendar-cell {
@@ -156,9 +143,8 @@
     }
 
     .today {
-      border: 2px solid var(--link-bg);
+      border: 2px solid var(--accent);
       font-weight: bold;
-      background-color: var(--today-bg);
     }
 
     .popup {
@@ -167,9 +153,9 @@
       left: 50%;
       transform: translate(-50%, -50%);
       background: var(--popup-bg);
-      padding: 30px;
+      padding: 25px;
       border-radius: 12px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
       display: none;
       z-index: 100;
       min-width: 300px;
@@ -181,22 +167,20 @@
     .popup-close {
       position: absolute;
       top: 12px;
-      right: 16px;
+      right: 12px;
       font-size: 20px;
-      color: var(--close);
+      color: #e74c3c;
       cursor: pointer;
-      font-weight: bold;
     }
 
     .popup-close:hover {
-      color: var(--close-hover);
+      color: #c0392b;
     }
 
     #popup-content h3 {
-      color: var(--text);
-      margin-bottom: 16px;
-      border-bottom: 2px solid var(--popup-border);
-      padding-bottom: 10px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 8px;
     }
 
     #popup-content ul {
@@ -205,10 +189,9 @@
     }
 
     #popup-content li {
-      background-color: var(--li-bg);
-      padding: 12px;
+      background-color: var(--cell-hover);
+      padding: 10px;
       margin-bottom: 10px;
-      border-left: 5px solid var(--li-border);
       border-radius: 6px;
     }
 
@@ -221,44 +204,38 @@
     }
 
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: scale(0.95) translate(-50%, -50%);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1) translate(-50%, -50%);
-      }
+      from { opacity: 0; transform: scale(0.9) translate(-50%, -50%); }
+      to { opacity: 1; transform: scale(1) translate(-50%, -50%); }
     }
 
     @media (max-width: 768px) {
-      .header {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .title {
-        text-align: center;
-        margin-top: 10px;
-      }
-
       td {
-        height: 70px;
+        height: 60px;
         font-size: 12px;
       }
 
       .popup {
         width: 90%;
+        max-width: none;
+      }
+
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .title {
+        text-align: left;
+        margin-top: 10px;
       }
     }
   </style>
 </head>
-<body class="light">
-
+<body>
   <div class="header">
-    <div class="logo">📘 Catalog Metadata Support</div>
+    <div class="logo">Catalog Metadata Support</div>
     <h1 class="title">Release Calendar</h1>
-    <button id="theme-toggle">🌙 Dark Mode</button>
+    <button class="theme-toggle" id="themeToggle">🌗</button>
   </div>
 
   <div class="container">
@@ -313,29 +290,31 @@
     });
 
     document.getElementById('overlay').addEventListener('click', closePopup);
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closePopup();
-    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopup(); });
 
     // Theme toggle logic
-    const toggleBtn = document.getElementById('theme-toggle');
-    const body = document.body;
+    const toggleButton = document.getElementById('themeToggle');
+    const rootBody = document.body;
 
-    function setTheme(theme) {
-      body.className = theme;
-      localStorage.setItem('theme', theme);
-      toggleBtn.innerHTML = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+    function setTheme(mode) {
+      if (mode === 'dark') {
+        rootBody.classList.add('dark');
+        toggleButton.textContent = '☀️';
+      } else {
+        rootBody.classList.remove('dark');
+        toggleButton.textContent = '🌗';
+      }
+      localStorage.setItem('theme', mode);
     }
 
-    toggleBtn.addEventListener('click', () => {
-      const newTheme = body.classList.contains('dark') ? 'light' : 'dark';
-      setTheme(newTheme);
+    toggleButton.addEventListener('click', () => {
+      const isDark = rootBody.classList.contains('dark');
+      setTheme(isDark ? 'light' : 'dark');
     });
 
-    // Load saved theme
+    // Load user preference
     const savedTheme = localStorage.getItem('theme') || 'light';
     setTheme(savedTheme);
   </script>
-
 </body>
 </html>
