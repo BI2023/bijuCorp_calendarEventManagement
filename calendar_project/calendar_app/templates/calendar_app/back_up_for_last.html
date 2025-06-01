@@ -11,8 +11,8 @@
 <body class="light">
 
   <div class="header">
-    <div class="logo"> Catalog Metadata Support</div>
-    <h1 class="title"> 📘Release Calendar</h1>
+    <div class="logo">📘 Catalog Metadata Support</div>
+    <h1 class="title">Release Calendar</h1>
     <button id="theme-toggle">🌙 Dark Mode</button>
   </div>
 
@@ -39,8 +39,6 @@
   <span>Failed</span>
 </div>
 
-
-
   <script>
     const statusData = {{ status_data|safe }};
 
@@ -59,22 +57,14 @@
 
         if (data) {
           content.innerHTML = `
-  <h3>Details for ${date}</h3>
-  <ul>
-    <li><strong>Slapi Stage:</strong> ${data["Slapi Stage"] || 'N/A'}</li>
-    <li><strong>Slapi Status:</strong> ${data["Slapi status"] || 'N/A'}</li>
-    <li><strong>Actual Release Date:</strong> ${data["Actual Release Date"] || 'N/A'}</li>
-    <li><strong>Expected Release Date:</strong> ${data["Expected Release Date"] || 'N/A'}</li>
-  </ul>
-
-  <div style="margin-top: 20px; text-align: center;">
-    <button onclick="editEvent('${date}')" style="margin: 5px;">✏️ Edit</button>
-    <button onclick="addNotes('${date}')" style="margin: 5px;">📝 Add Notes</button>
-    <button onclick="downloadReport('${date}')" style="margin: 5px;">📥 Download Report</button>
-    <button onclick="markReviewed('${date}')" style="margin: 5px;">✅ Mark as Reviewed</button>
-  </div>
-`;
-
+            <h3>Details for ${date}</h3>
+            <ul>
+              <li><strong>Slapi Stage:</strong> ${data["Slapi Stage"] || 'N/A'}</li>
+              <li><strong>Slapi Status:</strong> ${data["Slapi status"] || 'N/A'}</li>
+              <li><strong>Actual Release Date:</strong> ${data["Actual Release Date"] || 'N/A'}</li>
+              <li><strong>Expected Release Date:</strong> ${data["Expected Release Date"] || 'N/A'}</li>
+            </ul>
+          `;
         } else {
           content.innerHTML = `<h3>${date}</h3><p>No data available.</p>`;
         }
@@ -108,32 +98,6 @@
     const savedTheme = localStorage.getItem('theme') || 'light';
     setTheme(savedTheme);
   </script>
-
-  <script>
-  function editEvent(date) {
-    alert("Edit clicked for " + date);
-    // Add your logic to open an edit modal or redirect
-  }
-
-  function addNotes(date) {
-    const note = prompt("Enter note for " + date);
-    if (note) {
-      alert("Note saved: " + note);
-      // Save note logic here
-    }
-  }
-
-  function downloadReport(date) {
-    alert("Downloading report for " + date);
-    // Implement file download logic
-  }
-
-  function markReviewed(date) {
-    alert("Marked " + date + " as reviewed");
-    // Update backend or statusData here
-  }
-</script>
-
 
 </body>
 </html>

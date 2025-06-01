@@ -1,18 +1,3 @@
-# from datetime import date
-
-# def get_status_for_date(check_date: date) -> str:
-#     # Simulated logic: even days are "success", odd are "failure"
-#     return 'success' if check_date.day % 2 == 0 else 'failure'
-
-
-# from datetime import date
-
-# def get_status_for_date(check_date: date) -> str:
-#     return 'success' if check_date.day % 2 == 0 else 'failure'
-
-
-# =========================
-
 
 # import json
 # from datetime import date
